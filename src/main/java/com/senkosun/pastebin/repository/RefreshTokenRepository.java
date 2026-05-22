@@ -1,4 +1,4 @@
-package com.senkosun.pastebin.reposiory;
+package com.senkosun.pastebin.repository;
 
 import com.senkosun.pastebin.entity.RefreshToken;
 import com.senkosun.pastebin.entity.User;
