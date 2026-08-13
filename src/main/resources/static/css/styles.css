@@ -1,0 +1,438 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #ffffff;
+    font-family: 'Google Sans', 'Segoe UI', Roboto, Arial, sans-serif;
+    min-height: 100vh;
+}
+
+/* Верхняя панель */
+.top-bar {
+    background: #fff;
+    border-bottom: 1px solid #e8eaed;
+    padding: 8px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.top-bar-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+/* Логотип — СЛЕВА */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.logo-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.logo-text {
+    font-size: 22px;
+    font-weight: 500;
+    color: #202124;
+    letter-spacing: -0.3px;
+    white-space: nowrap;
+}
+
+/* Поиск — по центру с тенью */
+.search-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: #f1f3f4;
+    border-radius: 8px;
+    padding: 0 16px;
+    border: 1px solid transparent;
+    transition: 0.15s;
+    max-width: 720px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.search-container:focus-within {
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-color: #dadce0;
+}
+
+.search-icon {
+    font-size: 20px;
+    color: #5f6368;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.search-input {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 400;
+    color: #202124;
+    padding: 10px 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    min-width: 0;
+}
+
+.search-input::placeholder {
+    color: #5f6368;
+    opacity: 0.7;
+}
+
+/* Иконки действий — СПРАВА */
+.header-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.header-actions .material-symbols-outlined {
+    font-size: 24px;
+    color: #5f6368;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: default;
+    transition: background 0.15s;
+}
+
+.header-actions .material-symbols-outlined:hover {
+    background: rgba(60, 64, 67, 0.08);
+}
+
+/* Основной контент */
+.main-content {
+    padding: 24px 24px 40px;
+    width: 100%;
+}
+
+/* Поле "Заметка..." - по центру */
+.note-input-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+    width: 100%;
+}
+
+.note-input {
+    background: #fff;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    padding: 0 16px;
+    color: #5f6368;
+    font-size: 16px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    cursor: text;
+    width: 595px;
+    max-width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.note-input:hover {
+    border-color: #bdc1c6;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.placeholder-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #5f6368;
+    opacity: 0.7;
+}
+
+.placeholder-text .material-symbols-outlined {
+    font-size: 22px;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Форма для создания заметки (скрыта по умолчанию) */
+.note-form {
+    display: none;
+}
+
+.note-form.active {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    padding-top: 12px;
+}
+
+.note-form input,
+.note-form textarea {
+    font-family: inherit;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 6px 0;
+    resize: vertical;
+    background: transparent;
+    color: #202124;
+}
+
+.note-form input::placeholder,
+.note-form textarea::placeholder {
+    color: #9aa0a6;
+}
+
+.note-form input {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.note-form textarea {
+    min-height: 60px;
+    line-height: 1.5;
+}
+
+.note-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.note-form-actions button {
+    border: none;
+    background: transparent;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    color: #202124;
+}
+
+.note-form-actions .close-btn:hover {
+    background: #f1f3f4;
+}
+
+.note-form-actions .save-btn {
+    background: #e8f0fe;
+    color: #1a73e8;
+}
+
+.note-form-actions .save-btn:hover {
+    background: #d2e3fc;
+}
+
+/* Сетка карточек (прижата к левому краю) */
+.notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0;
+}
+
+/* Карточка заметки */
+.note-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e8eaed;
+    padding: 16px 18px 8px;
+    transition: box-shadow 0.2s;
+    width: 100%;
+}
+
+.note-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.note-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #202124;
+    margin: 0 0 12px 0;
+    letter-spacing: -0.2px;
+}
+
+.note-content {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #202124;
+}
+
+.note-content p {
+    margin: 0 0 4px 0;
+}
+
+.note-content strong {
+    font-weight: 500;
+    color: #202124;
+}
+
+.note-content ul {
+    margin: 4px 0 12px 0;
+    padding-left: 20px;
+}
+
+.note-content li {
+    margin-bottom: 2px;
+}
+
+.note-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #e8eaed;
+}
+
+.note-footer .material-symbols-outlined {
+    font-size: 20px;
+    color: #5f6368;
+    opacity: 0.6;
+    padding: 4px;
+    border-radius: 50%;
+    cursor: default;
+    transition: opacity 0.2s, background 0.15s;
+}
+
+.note-footer .material-symbols-outlined:hover {
+    opacity: 1;
+    background: rgba(60, 64, 67, 0.08);
+}
+
+/* Форма для создания заметки (скрыта по умолчанию) */
+.note-form {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.note-form.active {
+    display: flex;
+}
+
+.note-form input,
+.note-form textarea {
+    font-family: inherit;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 6px 0;
+    resize: vertical;
+    background: transparent;
+    color: #202124;
+}
+
+.note-form input::placeholder,
+.note-form textarea::placeholder {
+    color: #9aa0a6;
+}
+
+.note-form input {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.note-form textarea {
+    min-height: 60px;
+    line-height: 1.5;
+}
+
+.note-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.note-form-actions button {
+    border: none;
+    background: transparent;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    color: #202124;
+}
+
+.note-form-actions .close-btn:hover {
+    background: #f1f3f4;
+}
+
+.note-form-actions .save-btn {
+    background: #e8f0fe;
+    color: #1a73e8;
+}
+
+.note-form-actions .save-btn:hover {
+    background: #d2e3fc;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .top-bar {
+        padding: 8px 16px;
+    }
+
+    .top-bar-content {
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .logo-text {
+        font-size: 18px;
+    }
+
+    .search-container {
+        order: 3;
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+
+    .header-actions {
+        margin-left: 0;
+    }
+
+    .main-content {
+        padding: 16px 16px 32px;
+    }
+
+    .note-input {
+        max-width: 100%;
+    }
+
+    .notes-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .notes-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
