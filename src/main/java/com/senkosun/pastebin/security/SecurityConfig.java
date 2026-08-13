@@ -37,6 +37,16 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Без сессий (используем JWT)
                 )
                 .authorizeHttpRequests(auth -> auth
+                        // Статика
+                        .requestMatchers(
+                                "/",
+                                "/index.html",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
+                                "/favicon.ico",
+                                "/static/**"
+                        ).permitAll()
                         // Открытые эндпоинты (без токена)
                         .requestMatchers("/api/auth/**").permitAll()
                         // Защищенные эндпоинты (требуют токен)
