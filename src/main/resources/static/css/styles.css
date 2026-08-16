@@ -117,6 +117,66 @@ body {
     background: rgba(60, 64, 67, 0.08);
 }
 
+.profile-wrapper {
+    position: relative;  /* Для позиционирования меню */
+    display: inline-block;
+}
+
+#profileBtn {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background 0.2s;
+    user-select: none;
+}
+
+#profileBtn:hover {
+    background: rgba(60, 64, 67, 0.08);
+}
+
+/* Выпадающее меню */
+.profile-dropdown {
+    display: none;  /* Скрыто по умолчанию */
+    position: absolute;
+    right: 0;
+    top: 100%;  /* Под иконкой */
+    margin-top: 8px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    min-width: 200px;
+    padding: 8px 0;
+    z-index: 1000;
+}
+
+/* Когда меню открыто */
+.profile-dropdown.open {
+    display: block;
+}
+
+/* Пункты меню */
+.profile-dropdown a {
+    display: block;
+    padding: 10px 20px;
+    color: #202124;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.15s;
+    cursor: pointer;
+}
+
+.profile-dropdown a:hover {
+    background: #f1f3f4;
+}
+
+/* Разделитель */
+.profile-dropdown .divider {
+    height: 1px;
+    background: #e8eaed;
+    margin: 4px 12px;
+}
+
+
 /* Основной контент */
 .main-content {
     padding: 24px 24px 40px;
