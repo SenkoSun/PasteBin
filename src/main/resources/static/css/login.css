@@ -1,0 +1,363 @@
+/* ============================================
+   LOGIN.CSS - Стили для страницы входа
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #ffffff;
+    font-family: 'Inter', 'Google Sans', 'Segoe UI', Roboto, Arial, sans-serif;
+    min-height: 100vh;
+}
+
+/* ============================================
+   ВЕРХНЯЯ ПАНЕЛЬ (как на главной)
+   ============================================ */
+
+.top-bar {
+    background: #fff;
+    border-bottom: 1px solid #e8eaed;
+    padding: 8px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.top-bar-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.logo-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.logo-text {
+    font-size: 22px;
+    font-weight: 700;
+    color: #202124;
+    letter-spacing: -0.3px;
+    white-space: nowrap;
+    font-family: 'Inter', sans-serif;
+}
+
+.search-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: #f1f3f4;
+    border-radius: 8px;
+    padding: 0 16px;
+    border: 1px solid transparent;
+    transition: 0.15s;
+    max-width: 720px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.search-container:focus-within {
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-color: #dadce0;
+}
+
+.search-icon {
+    font-size: 20px;
+    color: #5f6368;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.search-input {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 400;
+    color: #202124;
+    padding: 10px 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    min-width: 0;
+}
+
+.search-input::placeholder {
+    color: #5f6368;
+    opacity: 0.7;
+}
+
+.header-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.header-actions .material-symbols-outlined {
+    font-size: 24px;
+    color: #5f6368;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: default;
+    transition: background 0.15s;
+}
+
+.header-actions .material-symbols-outlined:hover {
+    background: rgba(60, 64, 67, 0.08);
+}
+
+.profile-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+#profileBtn {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background 0.2s;
+    user-select: none;
+}
+
+#profileBtn:hover {
+    background: rgba(60, 64, 67, 0.08);
+}
+
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 8px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    min-width: 200px;
+    padding: 8px 0;
+    z-index: 1000;
+}
+
+.profile-dropdown.open {
+    display: block;
+}
+
+.profile-dropdown a {
+    display: block;
+    padding: 10px 20px;
+    color: #202124;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.15s;
+    cursor: pointer;
+}
+
+.profile-dropdown a:hover {
+    background: #f1f3f4;
+}
+
+/* ============================================
+   ОСНОВНОЙ КОНТЕНТ
+   ============================================ */
+
+.main-content {
+    padding: 24px 24px 40px;
+    width: 100%;
+}
+
+/* ============================================
+   ФОРМА ВХОДА (дизайн из Figma)
+   ============================================ */
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 140px);
+    padding: 20px;
+}
+
+.auth-box {
+    background: #ffffff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    padding: 40px 48px;
+    width: 100%;
+    max-width: 420px;
+}
+
+.auth-box h2 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: #000000;
+    text-align: left;
+    margin-bottom: 28px;
+}
+
+/* Поля ввода */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    background: #e9ebeb;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    color: rgba(45, 44, 44, 0.58);
+    outline: none;
+    box-sizing: border-box;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus {
+    background: #ffffff;
+    /*border: 1px solid #1a73e8;*/
+    border: none;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(255, 198, 0, 0.6);
+}
+
+.form-group input::placeholder {
+    color: rgba(45, 44, 44, 0.58);
+    font-weight: 500;
+}
+
+/* Кнопка */
+.auth-btn {
+    width: 100%;
+    padding: 14px;
+    background: #22211e;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 8px;
+}
+
+.auth-btn:hover {
+    background: #3a3835;
+}
+
+.auth-btn:active {
+    transform: scale(0.98);
+}
+
+.auth-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Сообщения */
+.auth-message {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    display: none;
+}
+
+.auth-message.error {
+    display: block;
+    background: #fce8e6;
+    color: #d93025;
+    border: 1px solid #f5c6c6;
+}
+
+.auth-message.success {
+    display: block;
+    background: #e6f4ea;
+    color: #1e8e3e;
+    border: 1px solid #b7e1cd;
+}
+
+/* ============================================
+   АДАПТИВНОСТЬ
+   ============================================ */
+
+@media (max-width: 768px) {
+    .top-bar {
+        padding: 8px 16px;
+    }
+
+    .top-bar-content {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .search-container {
+        order: 3;
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+
+    .logo-text {
+        font-size: 18px;
+    }
+
+    .header-actions {
+        margin-left: 0;
+    }
+
+    .main-content {
+        padding: 16px 16px 32px;
+    }
+
+    .auth-box {
+        padding: 24px 20px;
+    }
+
+    .auth-box h2 {
+        font-size: 20px;
+    }
+
+    .form-group input {
+        font-size: 16px;
+        padding: 12px 14px;
+    }
+
+    .auth-btn {
+        font-size: 18px;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-box {
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .auth-box h2 {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+}

@@ -47,13 +47,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Войти
     loginItem.addEventListener('click', function(e) {
         e.preventDefault();
-        window.location.href = '/login.html';
+        window.location.href = '/login';
     });
 
     // Зарегистрироваться
     registerItem.addEventListener('click', function(e) {
         e.preventDefault();
-        window.location.href = '/login.html';  // Можно сделать отдельную страницу
+        window.location.href = '/registration';  // Можно сделать отдельную страницу
     });
 
     // Выйти

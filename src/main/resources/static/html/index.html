@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PasteBin</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0,1" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+<!-- Верхняя панель -->
+<header class="top-bar">
+    <div class="top-bar-content">
+        <div class="logo">
+            <img src="/images/image-2-4.png" class="logo-icon" alt="PasteBin" />
+            <span class="logo-text">PasteBin</span>
+        </div>
+
+        <div class="search-container">
+            <span class="material-symbols-outlined search-icon">search</span>
+            <input class="search-input" type="text" placeholder="Поиск..." id="searchInput" />
+        </div>
+
+        <div class="header-actions">
+            <span class="material-symbols-outlined">refresh</span>
+            <span class="material-symbols-outlined">view_list</span>
+            <div class="profile-wrapper">
+                <span class="material-symbols-outlined" id="profileBtn">account_circle</span>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="#" id="profileLogin">Войти</a>
+                    <a href="#" id="profileRegister">Зарегистрироваться</a>
+                    <a href="#" id="profileLogout" style="display:none;">Выйти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Основной контент -->
+<main class="main-content">
+    <!-- Поле "Заметка..." -->
+    <div class="note-input-wrapper">
+        <div class="note-input" id="noteInput">
+            <div class="placeholder-text">
+                <span class="material-symbols-outlined">sticky_note_2</span>
+                Заметка...
+            </div>
+
+            <!-- Форма для создания заметки -->
+            <div class="note-form" id="noteForm">
+                <input type="text" placeholder="Название..." id="noteTitleInput" />
+                <textarea placeholder="Текст заметки..." id="noteContentInput" rows="3"></textarea>
+                <div class="note-form-actions">
+                    <button class="close-btn" id="closeFormBtn">Закрыть</button>
+                    <button class="save-btn" id="saveNoteBtn">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Сетка карточек -->
+    <div class="notes-grid" id="notesGrid">
+        <!-- Карточки будут добавляться через JavaScript -->
+    </div>
+</main>
+
+<script src="/js/script.js"></script>
+</body>
+</html>
