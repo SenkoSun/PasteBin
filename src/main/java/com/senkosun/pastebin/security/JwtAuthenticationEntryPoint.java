@@ -24,7 +24,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
                 requestURI.startsWith("/js/") ||
                 requestURI.startsWith("/images/") ||
                 requestURI.equals("/") ||
-                requestURI.equals("/index.html")) {
+                requestURI.startsWith("/html/")) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
             return;
         }

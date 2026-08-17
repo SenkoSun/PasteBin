@@ -31,6 +31,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
+        String path = request.getRequestURI();
+        System.out.println("🔍 ЗАПРОС К: " + path);
+
         final String authHeader = request.getHeader("Authorization");
 
         // Проверяем, есть ли заголовок и начинается ли с "Bearer "

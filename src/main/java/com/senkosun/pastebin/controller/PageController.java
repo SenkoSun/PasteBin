@@ -8,6 +8,17 @@ public class PageController {
 
     @GetMapping("/")
     public String index() {
-        return "forward:/index.html";
+        return "forward:/html/index.html";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "forward:/html/login.html";
+    }
+
+    // Страница регистрации
+    @GetMapping("/register")
+    public String register() {
+        return "forward:/html/register.html";
     }
 }

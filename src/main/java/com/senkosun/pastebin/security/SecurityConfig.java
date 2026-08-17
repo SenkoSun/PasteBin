@@ -40,7 +40,9 @@ public class SecurityConfig {
                         // Статика
                         .requestMatchers(
                                 "/",
-                                "/index.html",
+                                "/login",
+                                "/register",
+                                "/html/**",
                                 "/css/**",
                                 "/js/**",
                                 "/images/**",
