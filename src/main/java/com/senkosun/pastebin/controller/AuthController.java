@@ -9,6 +9,7 @@ import com.senkosun.pastebin.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -43,11 +44,9 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestHeader("Authorization") String authorizationHeader) {
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            String refreshToken = authorizationHeader.substring(7);
-            authService.logout(refreshToken);
-        }
+    public ResponseEntity<?> logout(Authentication authentication) {
+        String accessToker = authentication.getName();
+        authService.logout(accessToker);
         return ResponseEntity.ok("Logged out successfully");
     }
 
