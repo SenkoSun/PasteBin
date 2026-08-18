@@ -9,6 +9,7 @@ if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
+        const username = document.getElementById('loginUsername').value.trim();
         const email = document.getElementById('loginEmail').value.trim();
         const password = document.getElementById('loginPassword').value.trim();
         const message = document.getElementById('authMessage');
@@ -17,7 +18,7 @@ if (loginForm) {
         message.className = 'auth-message';
         message.textContent = '';
 
-        if (!email || !password) {
+        if (!email || !password || !username) {
             message.textContent = 'Заполните все поля';
             message.className = 'auth-message error';
             return;
@@ -31,7 +32,7 @@ if (loginForm) {
             const response = await fetch(`${API_BASE}/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({username, password})
             });
 
             const data = await response.json();
