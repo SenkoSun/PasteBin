@@ -41,7 +41,7 @@
 
 <!-- Основной контент -->
 <main class="main-content">
-    <!-- Поле "Заметка..." -->
+    <!-- Поле для создания заметок -->
     <div class="note-input-wrapper">
         <div class="note-input" id="noteInput">
             <div class="placeholder-text">
@@ -64,6 +64,18 @@
     <!-- Сетка карточек -->
     <div class="notes-grid" id="notesGrid">
         <!-- Карточки будут добавляться через JavaScript -->
+    </div>
+
+    <!-- не авторизован -->
+    <div class="empty-state" id="emptyStateGuest">
+        <div class="material-symbols-outlined icon-unlogin"></div>
+        <p>Войдите, чтобы создавать заметки</p>
+    </div>
+
+    <!-- авторизован -->
+    <div class="empty-state" id="emptyStateUser" style="display:none;">
+        <div class="material-symbols-outlined icon-login"></div>
+        <p>Здесь будут ваши заметки</p>
     </div>
 </main>
 
