@@ -57,8 +57,31 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Выйти
-    logoutItem.addEventListener('click', function(e) {
+    logoutItem.addEventListener('click', async function(e) {
         e.preventDefault();
+
+        const refreshToken = localStorage.getItem('refreshToken');
+
+        // 1. Отправляем запрос на сервер (если есть токен)
+        if (refreshToken) {
+            try {
+                const response = await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${refreshToken}`
+                    }
+                });
+
+                if (!response.ok) {
+                    console.log('Ошибка при выходе:', response.status);
+                } else {
+                    console.log('✅ Выход выполнен успешно');
+                }
+            } catch (error) {
+                console.error('Ошибка при выходе:', error);
+            }
+        }
+
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('user');

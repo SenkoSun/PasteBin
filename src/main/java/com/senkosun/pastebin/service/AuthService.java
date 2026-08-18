@@ -53,7 +53,10 @@ public class AuthService {
             throw new RuntimeException("Invalid username or password");
         }
 
+        System.out.println("🔍 Удаляем старые токены для user_id: " + user.getId());
         refreshTokenRepository.deleteByUser(user);
+        refreshTokenRepository.flush();
+
 
         String accessToken = jwtService.generateAccessToken(
                 user.getUsername(),
