@@ -31,8 +31,8 @@ public class Paste {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "ttl_hours", nullable = false)
-    private Long ttlHours;
+    @Column(name = "ttl_minutes", nullable = false)
+    private Long ttlMinutes;
 
     @Column(name = "expires_at", nullable = false)
     private LocalDateTime expiresAt;
