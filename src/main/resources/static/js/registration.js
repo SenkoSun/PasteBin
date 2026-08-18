@@ -149,15 +149,15 @@ document.addEventListener('DOMContentLoaded', function() {
     logoutItem.addEventListener('click', async function(e) {
         e.preventDefault();
 
-        const refreshToken = localStorage.getItem('refreshToken');
+        const accessToken = localStorage.getItem('accessToken');
 
         // 1. Отправляем запрос на сервер (если есть токен)
-        if (refreshToken) {
+        if (accessToken) {
             try {
                 const response = await fetch('/api/auth/logout', {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${refreshToken}`
+                        'Authorization': `Bearer ${accessToken}`
                     }
                 });
 
