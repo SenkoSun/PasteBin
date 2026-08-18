@@ -109,10 +109,9 @@ public class AuthService {
     }
 
     @Transactional
-    public void logout(String refreshTokenString) {
+    public void logout(String username) {
         // Находим refresh токен
-        RefreshToken refreshToken = refreshTokenRepository.findByToken(refreshTokenString)
-                .orElse(null);
+        RefreshToken refreshToken = refreshTokenRepository.findByUser(userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"))).orElse(null);
 
         if (refreshToken != null) {
             // Помечаем как отозванный или просто удаляем
