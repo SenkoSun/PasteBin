@@ -2,6 +2,7 @@ package com.senkosun.pastebin.controller;
 
 import com.senkosun.pastebin.dto.request.LoginRequest;
 import com.senkosun.pastebin.dto.response.LoginResponse;
+import com.senkosun.pastebin.dto.response.MessageResponse;
 import com.senkosun.pastebin.dto.response.RefreshResponse;
 import com.senkosun.pastebin.dto.request.RegisterRequest;
 import com.senkosun.pastebin.service.AuthService;
@@ -20,7 +21,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
         authService.register(request.getUsername(), request.getEmail(), request.getPassword());
-        return ResponseEntity.ok("User registered successfully");
+        return ResponseEntity.ok(new MessageResponse("User registered successfully"));
     }
 
     @PostMapping("/login")

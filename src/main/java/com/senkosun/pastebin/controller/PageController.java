@@ -17,8 +17,8 @@ public class PageController {
     }
 
     // Страница регистрации
-    @GetMapping("/register")
+    @GetMapping("/registration")
     public String register() {
-        return "forward:/html/register.html";
+        return "forward:/html/registration.html";
     }
 }
