@@ -116,7 +116,7 @@ public class PasteService {
 
     @Transactional
     public PasteResponse updatePaste(Long id, String content, String username, Long ttlMinutes) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found" + username));
 
         Paste paste = pasteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Paste not found"));
@@ -131,8 +131,8 @@ public class PasteService {
         }
 
         if (ttlMinutes != null && ttlMinutes > 0) {
-            paste.setTtlMinutes(ttlMinutes);
-            paste.setExpiresAt(LocalDateTime.now().plusMinutes(ttlMinutes));
+            paste.setTtlMinutes(paste.getTtlMinutes() + ttlMinutes);
+            paste.setExpiresAt(paste.getExpiresAt().plusMinutes(ttlMinutes));
         }
 
 

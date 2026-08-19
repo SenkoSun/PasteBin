@@ -61,8 +61,8 @@ public class PasteController {
     public ResponseEntity<PasteResponse> updatePaste(@PathVariable Long id, Authentication authentication,  @Valid @RequestBody UpdatePasteRequest request) {
         PasteResponse response = pasteService.updatePaste(
                 id,
-                authentication.getName(),
                 request.getContent(),
+                authentication.getName(),
                 request.getTtlMinutes()
         );
         return ResponseEntity.ok(response);
