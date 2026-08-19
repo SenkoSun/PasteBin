@@ -141,6 +141,22 @@ public class PasteService {
 
     }
 
+
+    @Transactional
+    public void deletePaste(Long id, String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+
+        Paste paste = pasteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Paste not found"));
+
+        if (!paste.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("You can only delete your own pastes");
+        }
+
+        pasteRepository.delete(paste);
+
+    }
+
     private PasteResponse toResponse(Paste paste) {
         return new PasteResponse(
                 paste.getId(),

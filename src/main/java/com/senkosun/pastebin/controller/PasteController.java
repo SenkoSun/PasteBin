@@ -69,9 +69,13 @@ public class PasteController {
     }
 
 
-//    @DeleteMapping(/{id})
-//    public ResponseEntity<PasteResponse> deletePaste(@PathVariable Long id, Authentication authentication) {
-//
-//    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePaste(@PathVariable Long id, Authentication authentication) {
+        pasteService.deletePaste(
+                id,
+                authentication.getName()
+        );
+        return ResponseEntity.ok("Delete successfully");
+    }
 
 }
