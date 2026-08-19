@@ -50,10 +50,11 @@ public class PasteController {
         return ResponseEntity.ok(response);
     }
 
-//    @GetMapping(/slug/{slug})
-//    public ResponseEntity<PasteResponse> getPasteBySlug(@PathVariable String slug, Authentication authentication) {
-//
-//    }
+    @GetMapping("/slug/{slug}")
+    public ResponseEntity<PasteResponse> getPasteBySlug(@PathVariable String slug) {
+        PasteResponse response = pasteService.getPasteBySlug(slug);
+        return ResponseEntity.ok(response);
+    }
 
 //    @PutMapping(/{id})
 //    public ResponseEntity<PasteResponse> updatePaste(@PathVariable Long id, Authentication authentication,  @Valid @RequestBody UpdatePasteRequest request) {
