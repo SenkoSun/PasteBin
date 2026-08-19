@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/pastes")
 @RequiredArgsConstructor
@@ -37,14 +39,16 @@ public class PasteController {
     }
 
 //    @GetMapping
-//    public ResponseEntity<List<PasteSummaryResponse>> getPastes(Authentication authentication) {
-//
+//    public ResponseEntity<List<PasteResponse>> getPastes(Authentication authentication) {
+//        List<PasteResponse> responses = pasteService.getUserPastes(authentication.getName());
+//        return ResponseEntity.ok(responses);
 //    }
 
-//    @GetMapping(/{id})
-//    public ResponseEntity<PasteResponse> getPasteById(@PathVariable Long id, Authentication authentication) {
-//
-//    }
+    @GetMapping("/{id}")
+    public ResponseEntity<PasteResponse> getPasteById(@PathVariable Long id, Authentication authentication) {
+        PasteResponse response = pasteService.getPasteById(id, authentication.getName());
+        return ResponseEntity.ok(response);
+    }
 
 //    @GetMapping(/slug/{slug})
 //    public ResponseEntity<PasteResponse> getPasteBySlug(@PathVariable String slug, Authentication authentication) {
