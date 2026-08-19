@@ -15,7 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -71,6 +74,28 @@ public class PasteService {
         }
 
         return toResponse(paste);
+
+    }
+
+    @Transactional
+    public List<PasteResponse> getUserPastes(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Paste> pastes = pasteRepository.findByUserOrderByCreatedAtDesc(user);
+
+        List<Paste> activePastes = new ArrayList<>();
+        for (Paste paste : pastes) {
+            if (paste.getExpiresAt().isBefore(LocalDateTime.now())) {
+                pasteRepository.delete(paste);
+            } else {
+                activePastes.add(paste);
+            }
+        }
+
+        return activePastes.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
 
     }
 

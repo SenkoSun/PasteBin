@@ -38,11 +38,11 @@ public class PasteController {
         return ResponseEntity.ok(pasteResponse);
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<PasteResponse>> getPastes(Authentication authentication) {
-//        List<PasteResponse> responses = pasteService.getUserPastes(authentication.getName());
-//        return ResponseEntity.ok(responses);
-//    }
+    @GetMapping
+    public ResponseEntity<List<PasteResponse>> getPastes(Authentication authentication) {
+        List<PasteResponse> responses = pasteService.getUserPastes(authentication.getName());
+        return ResponseEntity.ok(responses);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<PasteResponse> getPasteById(@PathVariable Long id, Authentication authentication) {
