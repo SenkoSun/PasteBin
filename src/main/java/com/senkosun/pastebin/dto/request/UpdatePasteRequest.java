@@ -4,9 +4,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
+@Data
 public class UpdatePasteRequest {
-    @NotBlank(message = "Content is requiring")
     @Size(max = 1000, message = "The content may have at max 1000 characters")
     private String content;
 

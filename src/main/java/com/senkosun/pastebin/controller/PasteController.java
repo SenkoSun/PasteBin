@@ -2,6 +2,7 @@ package com.senkosun.pastebin.controller;
 
 import com.senkosun.pastebin.dto.request.CreatePasteRequest;
 import com.senkosun.pastebin.dto.request.LoginRequest;
+import com.senkosun.pastebin.dto.request.UpdatePasteRequest;
 import com.senkosun.pastebin.dto.response.LoginResponse;
 import com.senkosun.pastebin.dto.response.MessageResponse;
 import com.senkosun.pastebin.dto.response.PasteResponse;
@@ -56,10 +57,16 @@ public class PasteController {
         return ResponseEntity.ok(response);
     }
 
-//    @PutMapping(/{id})
-//    public ResponseEntity<PasteResponse> updatePaste(@PathVariable Long id, Authentication authentication,  @Valid @RequestBody UpdatePasteRequest request) {
-//
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<PasteResponse> updatePaste(@PathVariable Long id, Authentication authentication,  @Valid @RequestBody UpdatePasteRequest request) {
+        PasteResponse response = pasteService.updatePaste(
+                id,
+                authentication.getName(),
+                request.getContent(),
+                request.getTtlMinutes()
+        );
+        return ResponseEntity.ok(response);
+    }
 
 
 //    @DeleteMapping(/{id})

@@ -114,6 +114,32 @@ public class PasteService {
 
     }
 
+    @Transactional
+    public PasteResponse updatePaste(Long id, String content, String username, Long ttlMinutes) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+
+        Paste paste = pasteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Paste not found"));
+
+        if (paste.getExpiresAt().isBefore(LocalDateTime.now())) {
+            pasteRepository.delete(paste);
+            throw new RuntimeException("Paste has expired and has been deleted");
+        }
+
+        if (content != null && !content.trim().isEmpty()) {
+            paste.setContent(content);
+        }
+
+        if (ttlMinutes != null && ttlMinutes > 0) {
+            paste.setTtlMinutes(ttlMinutes);
+            paste.setExpiresAt(LocalDateTime.now().plusMinutes(ttlMinutes));
+        }
+
+
+        Paste updatedPaste = pasteRepository.save(paste);
+        return toResponse(updatedPaste);
+
+    }
 
     private PasteResponse toResponse(Paste paste) {
         return new PasteResponse(
