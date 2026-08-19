@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class PasteRequest {
+public class CreatePasteRequest {
 
     @NotBlank(message = "Content is requiring")
     @Size(min = 1, max = 1000, message = "The content may have at max 1000 characters")
