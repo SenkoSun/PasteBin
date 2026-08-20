@@ -197,10 +197,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // 1. Функция сворачивания и очистки
     const collapseAndClear = () => {
         wrapper.classList.remove('expanded');
-        titleInput.value = '';
-        contentInput.value = '';
-        titleInput.blur();
-        contentInput.blur();
+
+        setTimeout(() => {
+            titleInput.value = '';
+            contentInput.value = '';
+            titleInput.blur();
+            contentInput.blur();
+        }, 450);
     };
 
     // 2. Логика клика для РАЗВОРАЧИВАНИЯ (вешаем на документ, чтобы ловить клик по плейсхолдеру)
