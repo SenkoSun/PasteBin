@@ -10,7 +10,6 @@ const API_BASE = '/api';
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
-
     // 1. Находим элементы
     const profileBtn = document.getElementById('profileBtn');
     const dropdown = document.getElementById('profileDropdown');
@@ -96,4 +95,95 @@ document.addEventListener('DOMContentLoaded', function() {
         dropdown.classList.remove('open');  // Закрываем меню
         window.location.reload();  // Перезагружаем страницу
     });
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function createNoteCard(note) {
+        // Создаем элемент
+        const card = document.createElement('div');
+        card.className = 'note-card';
+        card.dataset.id = note.id;
+
+        let displayContent = note.content || 'Пустая заметка';
+        if (displayContent.length > 385) {
+            displayContent = displayContent.substring(0, 385) + '...';
+        }
+
+        // Заполняем HTML
+        card.innerHTML = `   
+        <h3 class="note-title">${escapeHtml(note.title || '')}</h3>
+        <div class="note-content">${escapeHtml(displayContent)}</div>
+        
+        <div class="note-actions">
+            <button class="action-btn edit-btn" data-id="${note.id}" title="Редактировать">
+                <span class="material-symbols-outlined">edit</span>
+            </button>
+            
+            <button class="action-btn delete-btn" data-id="${note.id}" title="Удалить">
+                <span class="material-symbols-outlined">delete</span>
+            </button>
+        </div>
+    `;
+
+        // Добавляем обработчик удаления
+        const deleteBtn = card.querySelector('.delete-btn');
+        deleteBtn.addEventListener('click', () => deleteNote(note.id));
+
+        const editBtn = card.querySelector('.edit-btn');
+        editBtn.addEventListener('click', () => editNote(note.id));
+
+        return card;
+    }
+
+    async function showPastes() {
+        const userEmptyState  = document.getElementById('emptyStateUser');
+        const guestEmptyState  = document.getElementById('emptyStateGuest');
+
+        const token = localStorage.getItem('accessToken');
+
+        if (token) {
+            userEmptyState.style.display = 'block';
+            guestEmptyState.style.display = 'none';
+        } else {
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/pastes', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                console.error('Ошибка загрузки:', response.status);
+                return;
+            }
+
+            const data = await response.json();
+
+            if (data && data.length > 0) {
+                const grid = document.getElementById('notesGrid');
+                grid.innerHTML = '';
+
+                data.forEach(note => {
+                    const card = createNoteCard(note);
+                    grid.appendChild(card);
+                });
+
+                userEmptyState.style.display = 'none';
+
+            }
+
+        } catch (error) {
+            console.error('Ошибка при загрузке заметок:', error);
+        }
+    }
+    showPastes()
+
 });
