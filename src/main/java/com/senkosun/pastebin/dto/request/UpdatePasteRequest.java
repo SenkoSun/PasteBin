@@ -8,6 +8,9 @@ import lombok.Data;
 
 @Data
 public class UpdatePasteRequest {
+    @Size(max = 100, message = "The title may have at max 100, characters")
+    private String title;
+
     @Size(max = 1000, message = "The content may have at max 1000 characters")
     private String content;
 

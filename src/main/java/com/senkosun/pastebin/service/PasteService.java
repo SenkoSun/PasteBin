@@ -27,7 +27,7 @@ public class PasteService {
     private final PasteRepository pasteRepository;
 
     @Transactional
-    public PasteResponse createPaste(String content, String username, Long ttlMinutes) {
+    public PasteResponse createPaste(String title, String content, String username, Long ttlMinutes) {
         if (content == null || content.trim().isEmpty()) {
             throw new IllegalArgumentException("Content cannot be empty");
         }
@@ -40,6 +40,7 @@ public class PasteService {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
 
         Paste paste = new Paste();
+        paste.setTitle(title);
         paste.setContent(content);
         paste.setUser(user);
         paste.setCreatedAt(LocalDateTime.now());
@@ -115,7 +116,7 @@ public class PasteService {
     }
 
     @Transactional
-    public PasteResponse updatePaste(Long id, String content, String username, Long ttlMinutes) {
+    public PasteResponse updatePaste(Long id, String title, String content, String username, Long ttlMinutes) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found" + username));
 
         Paste paste = pasteRepository.findById(id)
@@ -124,6 +125,10 @@ public class PasteService {
         if (paste.getExpiresAt().isBefore(LocalDateTime.now())) {
             pasteRepository.delete(paste);
             throw new RuntimeException("Paste has expired and has been deleted");
+        }
+
+        if (title != null && !title.trim().isEmpty()) {
+            paste.setTitle(title);
         }
 
         if (content != null && !content.trim().isEmpty()) {
@@ -160,6 +165,7 @@ public class PasteService {
     private PasteResponse toResponse(Paste paste) {
         return new PasteResponse(
                 paste.getId(),
+                paste.getTitle(),
                 paste.getContent(),
                 paste.getSlug(),
                 paste.getCreatedAt(),

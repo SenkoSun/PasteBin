@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PasteResponse {
     private Long id;
+    private String title;
     private String content;
     private String slug;
     private LocalDateTime createdAt;

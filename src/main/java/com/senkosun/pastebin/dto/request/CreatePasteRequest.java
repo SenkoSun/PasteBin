@@ -9,6 +9,9 @@ import lombok.Data;
 @Data
 public class CreatePasteRequest {
 
+    @Size(max = 100, message = "The title may have at max 100, characters")
+    private String title;
+
     @NotBlank(message = "Content is requiring")
     @Size(min = 1, max = 1000, message = "The content may have at max 1000 characters")
     private String content;

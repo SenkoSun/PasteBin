@@ -32,6 +32,7 @@ public class PasteController {
     @PostMapping
     public ResponseEntity<PasteResponse> createPaste(Authentication authentication, @Valid @RequestBody CreatePasteRequest request) {
         PasteResponse pasteResponse = pasteService.createPaste(
+                request.getTitle(),
                 request.getContent(),
                 authentication.getName(),
                 request.getTtlMinutes()
@@ -61,6 +62,7 @@ public class PasteController {
     public ResponseEntity<PasteResponse> updatePaste(@PathVariable Long id, Authentication authentication,  @Valid @RequestBody UpdatePasteRequest request) {
         PasteResponse response = pasteService.updatePaste(
                 id,
+                request.getTitle(),
                 request.getContent(),
                 authentication.getName(),
                 request.getTtlMinutes()

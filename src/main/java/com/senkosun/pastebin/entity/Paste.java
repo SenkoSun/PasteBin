@@ -18,6 +18,9 @@ public class Paste {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "title", nullable = true, length = 100)
+    private String title;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
