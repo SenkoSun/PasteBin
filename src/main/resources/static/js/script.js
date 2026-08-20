@@ -184,15 +184,15 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Ошибка при загрузке заметок:', error);
         }
     }
-    showPastes()
+    showPastes();
 
-});
-document.addEventListener('DOMContentLoaded', () => {
     const wrapper = document.getElementById('noteCreatorWrapper');
     const titleInput = document.getElementById('noteTitleInput');
     const contentInput = document.getElementById('noteContentInput');
     const closeBtn = document.getElementById('closeFormBtn');
     const saveBtn = document.getElementById('saveNoteBtn');
+
+    const token = localStorage.getItem('accessToken');
 
     // 1. Функция сворачивания и очистки
     const collapseAndClear = () => {
@@ -219,22 +219,51 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 4. Кнопка "Сохранить"
-    saveBtn.addEventListener('click', (e) => {
+    saveBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
 
         const title = titleInput.value.trim();
         const content = contentInput.value.trim();
+        const ttlMinutes = 120;
 
         if (!content) {
             alert('Нельзя сохранить пустую заметку!');
             return;
         }
 
-        // --- ВАШ ЗАПРОС НА БЭКЕНД ---
-        console.log('Сохраняем:', { title: title || 'Без названия', content });
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Сохранение...';
 
-        // После сохранения сворачиваем
-        collapseAndClear();
+        try {
+            const response = await fetch('/api/pastes', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({title, content, ttlMinutes})
+            });
+
+            if (!response.ok) {
+                let errorMsg = `Ошибка сервера: ${response.status}`;
+                return;
+            }
+            const newNote = await response.json();
+
+            // 5. Добавляем ее в ваш список (например, создаем карточку через вашу функцию createNoteElement)
+            const grid = document.getElementById('notesGrid');
+            const noteCard = createNoteCard(newNote);
+            grid.prepend(noteCard);
+
+
+            collapseAndClear();
+        } catch (error) {
+            console.error('Ошибка при отправке заметки:', error);
+            alert('Не удалось сохранить заметку: ' + error.message);
+        } finally {
+            saveBtn.disabled = false;
+            saveBtn.textContent = "Сохранить";
+        }
     });
 
     // 5. Клик ВНЕ формы для сворачивания
