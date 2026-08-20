@@ -201,8 +201,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Ошибка при удалении');
+                return;
             }
 
             const card = document.querySelector(`.note-card[data-id="${noteId}"]`);
@@ -253,6 +252,16 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', (event) => {
         // Если кликнули внутри обертки, и она еще не раскрыта
         if (wrapper.contains(event.target) && !wrapper.classList.contains('expanded')) {
+
+            // const token = localStorage.getItem('token');
+            //
+            // // Если токена нет - не даем открыть форму, выводим предупреждение
+            // if (!token) {
+            //     alert('Чтобы создать заметку, пожалуйста, войдите в аккаунт.');
+            //     return; // Выходим, не раскрывая форму
+            // }
+
+
             wrapper.classList.add('expanded');
             setTimeout(() => titleInput.focus(), 100); // Задержка, чтобы анимация успела начаться
         }
@@ -286,6 +295,13 @@ document.addEventListener('DOMContentLoaded', function() {
     saveBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
 
+        // Если токена нет - не даем открыть форму, выводим предупреждение
+        if (!token) {
+            collapseAndClear();
+            alert('Чтобы создать заметку, пожалуйста, войдите в аккаунт.');
+            return; // Выходим, не раскрывая форму
+        }
+
         const title = titleInput.value.trim();
         const content = contentInput.value.trim();
         const ttlValue = ttlInput.value.trim();
@@ -316,7 +332,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (!response.ok) {
-                let errorMsg = `Ошибка сервера: ${response.status}`;
                 return;
             }
             const newNote = await response.json();
