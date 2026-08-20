@@ -42,23 +42,26 @@
 <!-- Основной контент -->
 <main class="main-content">
     <!-- Поле для создания заметок -->
-    <div class="note-input-wrapper">
-        <div class="note-input" id="noteInput">
-            <div class="placeholder-text">
-                <span class="material-symbols-outlined">sticky_note_2</span>
-                Заметка...
-            </div>
+    <!-- Поле для создания заметок -->
+    <div class="note-creator-wrapper" id="noteCreatorWrapper">
 
-            <!-- Форма для создания заметки -->
-            <div class="note-form" id="noteForm">
-                <input type="text" placeholder="Название..." id="noteTitleInput" />
-                <textarea placeholder="Текст заметки..." id="noteContentInput" rows="3"></textarea>
-                <div class="note-form-actions">
-                    <button class="close-btn" id="closeFormBtn">Закрыть</button>
-                    <button class="save-btn" id="saveNoteBtn">Сохранить</button>
-                </div>
+        <!-- Плейсхолдер (то, что видно в свернутом виде) -->
+        <div class="creator-placeholder" id="creatorPlaceholder">
+            <span class="material-symbols-outlined">sticky_note_2</span>
+            <span>Заметка...</span>
+        </div>
+
+        <!-- Форма (скрыта до клика) -->
+        <div class="note-form" id="noteForm">
+            <input type="text" placeholder="Название..." id="noteTitleInput"  maxlength="50"/>
+            <textarea placeholder="Текст заметки..." id="noteContentInput" rows="12"></textarea>
+
+            <div class="note-form-actions">
+                <button class="close-btn" id="closeFormBtn">Закрыть</button>
+                <button class="save-btn" id="saveNoteBtn">Сохранить</button>
             </div>
         </div>
+
     </div>
 
     <!-- Сетка карточек -->

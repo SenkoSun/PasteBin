@@ -234,76 +234,76 @@ body {
 }
 
 /* Форма для создания заметки (скрыта по умолчанию) */
-.note-form {
-    display: none;
-}
+/*.note-form {*/
+/*    display: none;*/
+/*}*/
 
-.note-form.active {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
-    padding-top: 12px;
-}
+/*.note-form.active {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    gap: 12px;*/
+/*    width: 100%;*/
+/*    padding-top: 12px;*/
+/*}*/
 
-.note-form input,
-.note-form textarea {
-    font-family: inherit;
-    border: none;
-    outline: none;
-    font-size: 16px;
-    padding: 6px 0;
-    resize: vertical;
-    background: transparent;
-    color: #202124;
-}
+/*.note-form input,*/
+/*.note-form textarea {*/
+/*    font-family: inherit;*/
+/*    border: none;*/
+/*    outline: none;*/
+/*    font-size: 16px;*/
+/*    padding: 6px 0;*/
+/*    resize: vertical;*/
+/*    background: transparent;*/
+/*    color: #202124;*/
+/*}*/
 
-.note-form input::placeholder,
-.note-form textarea::placeholder {
-    color: #9aa0a6;
-}
+/*.note-form input::placeholder,*/
+/*.note-form textarea::placeholder {*/
+/*    color: #9aa0a6;*/
+/*}*/
 
-.note-form input {
-    font-weight: 500;
-    font-size: 18px;
-}
+/*.note-form input {*/
+/*    font-weight: 500;*/
+/*    font-size: 18px;*/
+/*}*/
 
-.note-form textarea {
-    min-height: 60px;
-    line-height: 1.5;
-}
+/*.note-form textarea {*/
+/*    min-height: 60px;*/
+/*    line-height: 1.5;*/
+/*}*/
 
-.note-form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 6px;
-}
+/*.note-form-actions {*/
+/*    display: flex;*/
+/*    justify-content: flex-end;*/
+/*    gap: 12px;*/
+/*    margin-top: 6px;*/
+/*}*/
 
-.note-form-actions button {
-    border: none;
-    background: transparent;
-    padding: 8px 18px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s;
-    color: #202124;
-}
+/*.note-form-actions button {*/
+/*    border: none;*/
+/*    background: transparent;*/
+/*    padding: 8px 18px;*/
+/*    border-radius: 6px;*/
+/*    font-size: 14px;*/
+/*    font-weight: 500;*/
+/*    cursor: pointer;*/
+/*    transition: background 0.2s;*/
+/*    color: #202124;*/
+/*}*/
 
-.note-form-actions .close-btn:hover {
-    background: #f1f3f4;
-}
+/*.note-form-actions .close-btn:hover {*/
+/*    background: #f1f3f4;*/
+/*}*/
 
-.note-form-actions .save-btn {
-    background: #e8f0fe;
-    color: #1a73e8;
-}
+/*.note-form-actions .save-btn {*/
+/*    background: #e8f0fe;*/
+/*    color: #1a73e8;*/
+/*}*/
 
-.note-form-actions .save-btn:hover {
-    background: #d2e3fc;
-}
+/*.note-form-actions .save-btn:hover {*/
+/*    background: #d2e3fc;*/
+/*}*/
 
 /* Состояние если карточек нет */
 
@@ -423,17 +423,78 @@ body {
 }
 
 /* Форма для создания заметки (скрыта по умолчанию) */
+/* --- Обертка (Видна всегда) --- */
+.note-creator-wrapper {
+    background: #ffffff; /* Слегка серый фон для контраста с белым */
+    border-radius: 12px;
+    /* Делаем тень темнее, но мягкой, чтобы не резала глаз */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.03);
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 20px auto;
+    padding: 8px 14px; /* Вернули комфортный отступ (было 8px) */
+    cursor: text;
+
+    max-height: 48px; /* Вернули высоту (было 44px) */
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+}
+
+/* Развернутое состояние */
+.note-creator-wrapper.expanded {
+    background: #ffffff;
+    max-height: 450px;
+    /* Делаем тень в развернутом состоянии еще темнее и выразительнее */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25), 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Плейсхолдер (Виден только когда свернуто) --- */
+.creator-placeholder {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #5f6368;
+    font-size: 16px;
+    height: 32px;
+    transition: opacity 0.2s ease;
+}
+
+.creator-placeholder .material-symbols-outlined {
+    font-size: 22px;
+}
+
+/* Скрываем плейсхолдер при раскрытии */
+.note-creator-wrapper.expanded .creator-placeholder {
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* --- Сама Форма (Скрыта по умолчанию) --- */
 .note-form {
-    display: none;
+    display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-top: 12px;
+
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition: opacity 0.2s ease 0.05s, height 0.2s ease 0.05s;
+    margin: 0;
 }
 
-.note-form.active {
-    display: flex;
+/* Показываем форму при раскрытии */
+.note-creator-wrapper.expanded .note-form {
+    opacity: 1;
+    height: auto;
 }
 
+/* Стили инпутов (Ваши, немного доработанные для плавности) */
 .note-form input,
 .note-form textarea {
     font-family: inherit;
@@ -441,9 +502,10 @@ body {
     outline: none;
     font-size: 16px;
     padding: 6px 0;
-    resize: vertical;
     background: transparent;
     color: #202124;
+    width: 100%;
+    resize: none; /* Отключаем ресайз */
 }
 
 .note-form input::placeholder,
@@ -457,13 +519,15 @@ body {
 }
 
 .note-form textarea {
-    min-height: 60px;
+    min-height: 80px;
     line-height: 1.5;
 }
 
+/* --- Кнопки действий --- */
 .note-form-actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     gap: 12px;
     margin-top: 6px;
 }
@@ -477,22 +541,27 @@ body {
     font-weight: 500;
     cursor: pointer;
     transition: background 0.2s;
-    color: #202124;
 }
 
-.note-form-actions .close-btn:hover {
+/* Кнопка Закрыть */
+.close-btn {
+    color: #5f6368;
+}
+.close-btn:hover {
     background: #f1f3f4;
 }
 
-.note-form-actions .save-btn {
-    background: #e8f0fe;
-    color: #1a73e8;
+/* Кнопка Сохранить */
+.save-btn {
+    background: #fbbc04;
+    color: #202124;
+}
+.save-btn:hover {
+    background: #fecc10;
 }
 
-.note-form-actions .save-btn:hover {
-    background: #d2e3fc;
-}
 
+/* Стили карточек */
 .note-card {
     background: #ffffff;
     border-radius: 8px;

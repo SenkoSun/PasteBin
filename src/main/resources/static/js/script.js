@@ -187,3 +187,60 @@ document.addEventListener('DOMContentLoaded', function() {
     showPastes()
 
 });
+document.addEventListener('DOMContentLoaded', () => {
+    const wrapper = document.getElementById('noteCreatorWrapper');
+    const titleInput = document.getElementById('noteTitleInput');
+    const contentInput = document.getElementById('noteContentInput');
+    const closeBtn = document.getElementById('closeFormBtn');
+    const saveBtn = document.getElementById('saveNoteBtn');
+
+    // 1. Функция сворачивания и очистки
+    const collapseAndClear = () => {
+        wrapper.classList.remove('expanded');
+        titleInput.value = '';
+        contentInput.value = '';
+        titleInput.blur();
+        contentInput.blur();
+    };
+
+    // 2. Логика клика для РАЗВОРАЧИВАНИЯ (вешаем на документ, чтобы ловить клик по плейсхолдеру)
+    document.addEventListener('click', (event) => {
+        // Если кликнули внутри обертки, и она еще не раскрыта
+        if (wrapper.contains(event.target) && !wrapper.classList.contains('expanded')) {
+            wrapper.classList.add('expanded');
+            setTimeout(() => titleInput.focus(), 100); // Задержка, чтобы анимация успела начаться
+        }
+    });
+
+    // 3. Кнопка "Закрыть"
+    closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        collapseAndClear();
+    });
+
+    // 4. Кнопка "Сохранить"
+    saveBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        const title = titleInput.value.trim();
+        const content = contentInput.value.trim();
+
+        if (!content) {
+            alert('Нельзя сохранить пустую заметку!');
+            return;
+        }
+
+        // --- ВАШ ЗАПРОС НА БЭКЕНД ---
+        console.log('Сохраняем:', { title: title || 'Без названия', content });
+
+        // После сохранения сворачиваем
+        collapseAndClear();
+    });
+
+    // 5. Клик ВНЕ формы для сворачивания
+    document.addEventListener('click', (event) => {
+        if (!wrapper.contains(event.target) && wrapper.classList.contains('expanded')) {
+            collapseAndClear();
+        }
+    });
+});
