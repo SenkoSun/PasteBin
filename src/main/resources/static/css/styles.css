@@ -710,3 +710,52 @@ body {
     }
 }
 
+.ttl-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.2s;
+
+    width: auto;
+    max-width: 90px;
+
+    cursor: text;
+    outline: none;
+}
+
+.ttl-wrapper:hover {
+    background: #f1f3f4;
+}
+
+/* Сам инпут */
+.ttl-input {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 50px; /* Чтобы было компактно */
+    font-size: 14px;
+    font-family: inherit;
+    color: #5f6368;
+    font-weight: 500;
+    text-align: right;
+    padding: 0;
+}
+
+/* Убираем стрелочки у number инпута в разных браузерах */
+.ttl-input::-webkit-inner-spin-button,
+.ttl-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.ttl-input {
+    -moz-appearance: textfield;
+}
+
+/* Текст "мин" */
+.ttl-label {
+    font-size: 13px;
+    color: #9aa0a6;
+    font-weight: 400;
+}

@@ -189,6 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const wrapper = document.getElementById('noteCreatorWrapper');
     const titleInput = document.getElementById('noteTitleInput');
     const contentInput = document.getElementById('noteContentInput');
+    const ttlInput = document.getElementById('ttlInput');
     const closeBtn = document.getElementById('closeFormBtn');
     const saveBtn = document.getElementById('saveNoteBtn');
 
@@ -201,6 +202,8 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             titleInput.value = '';
             contentInput.value = '';
+            ttlInput.value = '';
+            ttlInput.blur();
             titleInput.blur();
             contentInput.blur();
         }, 450);
@@ -221,17 +224,42 @@ document.addEventListener('DOMContentLoaded', function() {
         collapseAndClear();
     });
 
-    // 4. Кнопка "Сохранить"
+    const ttlWrapper = document.querySelector('.ttl-wrapper');
+    // 4. Меню для ввода минут
+    ttlWrapper.addEventListener('focus', function() {
+        ttlInput.select();
+    });
+
+    ttlInput.addEventListener('focus', function() {
+        this.select();
+    });
+
+    ttlInput.addEventListener('change', function() {
+        let val = parseInt(this.value, 10);
+
+        if (val > 1440) {
+            this.value = 1440;
+        }
+    });
+
+    // 5. Кнопка "Сохранить"
     saveBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
 
         const title = titleInput.value.trim();
         const content = contentInput.value.trim();
-        const ttlMinutes = 120;
+        const ttlValue = ttlInput.value.trim();
 
-        if (!content) {
-            alert('Нельзя сохранить пустую заметку!');
-            return;
+        let ttlMinutes;
+
+        if (!ttlValue) {
+            ttlMinutes = 60;
+        } else {
+            ttlMinutes = parseInt(ttlValue, 10);
+
+            if (isNaN(ttlMinutes) || ttlMinutes < 1) {
+                ttlMinutes = 60;
+            }
         }
 
         saveBtn.disabled = true;
