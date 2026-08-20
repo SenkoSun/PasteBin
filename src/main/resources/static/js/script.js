@@ -186,6 +186,46 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     showPastes();
 
+    async function deleteNote(noteId) {
+        if (!confirm('Вы уверены, что хотите удалить эту заметку?')) {
+            return;
+        }
+
+        try {
+            // 2. Отправляем DELETE запрос на сервер
+            const response = await fetch(`/api/pastes/${noteId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Ошибка при удалении');
+            }
+
+            const card = document.querySelector(`.note-card[data-id="${noteId}"]`);
+
+            if (card) {
+                // Добавляем плавное исчезновение
+                card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.95)';
+
+                // Через 300 мс удаляем из DOM
+                setTimeout(() => {
+                    card.remove();
+                }, 300);
+            }
+
+        } catch (error) {
+            console.error('Ошибка при удалении:', error);
+            alert('Не удалось удалить заметку: ' + error.message);
+        }
+    }
+
+
     const wrapper = document.getElementById('noteCreatorWrapper');
     const titleInput = document.getElementById('noteTitleInput');
     const contentInput = document.getElementById('noteContentInput');
