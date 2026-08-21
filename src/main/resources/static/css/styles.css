@@ -955,3 +955,14 @@ body {
 .modal-slug.text {
     content: attr(data-slug);
 }
+
+
+#refreshBtn {
+    will-change: transform;
+    transition: transform 0.5s ease;
+    transform-origin: center center;
+}
+
+#refreshBtn.rotating {
+    transform: rotate(360deg);
+}

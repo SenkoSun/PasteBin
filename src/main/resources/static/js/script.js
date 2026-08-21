@@ -652,7 +652,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const refreshBtn = document.getElementById('refreshBtn');
     refreshBtn.addEventListener('click', () => {
-        showPastes();
+        refreshBtn.classList.add('rotating');
+
+        setTimeout(() => {
+            showPastes();
+        }, 100);
+
+        setTimeout(() => {
+            refreshBtn.classList.remove('rotating');
+            refreshBtn.style.transition = 'none';
+
+            setTimeout(() => {
+                refreshBtn.style.transition = 'transform 0.5s ease';
+            }, 10);
+
+        }, 600);
     });
 
 
