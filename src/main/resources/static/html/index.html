@@ -54,7 +54,7 @@
         <!-- Форма (скрыта до клика) -->
         <div class="note-form" id="noteForm">
             <input type="text" placeholder="Название..." id="noteTitleInput"  maxlength="50"/>
-            <textarea placeholder="Текст заметки..." id="noteContentInput" rows="12"></textarea>
+            <textarea placeholder="Текст заметки..." id="noteContentInput" rows="12" maxlength="1000"></textarea>
 
             <div class="note-form-actions">
                 <button class="close-btn" id="closeFormBtn">Закрыть</button>
@@ -84,6 +84,42 @@
         <div class="material-symbols-outlined icon-login"></div>
         <p>Здесь будут ваши заметки</p>
     </div>
+
+    <!-- окно для редактирования -->
+    <div class="modal-overlay" id="noteModalOverlay">
+        <div class="modal-window" id="noteModalWindow">
+            <div class="modal-header">
+                <input type="text" id="modalTitleInput" class="modal-title-input" maxlength="50" placeholder="Название...">
+<!--                <button class="modal-icon-btn pin-btn"><span class="material-symbols-outlined">push_pin</span></button>-->
+            </div>
+
+            <div class="modal-body">
+                <textarea id="modalContentInput" class="modal-content-textarea" placeholder="Текст заметки..." maxlength="1000"></textarea>
+            </div>
+
+            <div class="modal-footer">
+                <div class="modal-actions">
+                    <button class="modal-close-btn" id="modalCloseBtn">Закрыть</button>
+                    <div class="modal-ttl" tabindex="0">
+                        <input type="number" class="modal-ttl-input" id="modalTtlInput" value="" min="1" max="1440" placeholder="0">
+                        <span class="modal-ttl-label">Мин</span>
+                    </div>
+                    <button class="modal-share-btn" id="modalShareBtn">Поделиться</button>
+                    <button class="modal-save-btn" id="modalSaveBtn">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
 </main>
 
 <script src="/js/script.js"></script>

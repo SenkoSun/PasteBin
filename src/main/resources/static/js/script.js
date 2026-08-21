@@ -133,7 +133,14 @@ document.addEventListener('DOMContentLoaded', function() {
         deleteBtn.addEventListener('click', () => deleteNote(note.id));
 
         const editBtn = card.querySelector('.edit-btn');
-        editBtn.addEventListener('click', () => editNote(note.id));
+        editBtn.addEventListener('click', () => openNoteModal(note));
+
+        card.addEventListener('click', (e) => {
+            // Если кликнули не на кнопку (т.е. не на edit, delete и т.д.), то открываем
+            if (!e.target.closest('button')) {
+                openNoteModal(note);
+            }
+        });
 
         return card;
     }
@@ -319,12 +326,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (!ttlValue) {
             ttlMinutes = 60;
-        } else {
-            ttlMinutes = parseInt(ttlValue, 10);
+        }
 
-            if (isNaN(ttlMinutes) || ttlMinutes < 1) {
-                ttlMinutes = 60;
-            }
+        if (!content) {
+            alert('Нельзя сохранить пустую заметку!');
+            return;
+        }
+
+        if (content.length > 1000) {
+            alert('Размер заметки может быть не более чем 1000');
+            return;
+        }
+
+        if (ttlMinutes < 1) {
+            alert('Число минут должно быть положительным!');
+            return;
+        }
+
+        if (ttlMinutes > 1440) {
+            alert(`Максимальное время жизни заметки — 1440 минут`);
+            ttlMinutes = 1440;
         }
 
         saveBtn.disabled = true;
@@ -376,4 +397,144 @@ document.addEventListener('DOMContentLoaded', function() {
             collapseAndClear();
         }
     });
+
+
+    const modalOverlay = document.getElementById('noteModalOverlay');
+    const modalTitleInput = document.getElementById('modalTitleInput');
+    const modalContentInput = document.getElementById('modalContentInput');
+    const modalTtlInput = document.getElementById('modalTtlInput');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    const modalSaveBtn = document.getElementById('modalSaveBtn');
+    const modalShareBtn = document.getElementById('modalShareBtn');
+
+    let modalOriginalNote = null;
+
+    function openNoteModal(note) {
+        // Получаем данные исходной заметки (сохраняем снапшот)
+        modalOriginalNote = { ...note }; // Копия объекта
+
+        // Заполняем окно
+        modalTitleInput.value = note.title || 'Без названия';
+        modalContentInput.value = note.content;
+        modalTtlInput.value = note.ttlMinutes || '0'; // Заполняем время жизни
+
+        // Открываем окно
+        modalOverlay.classList.add('active');
+
+        setTimeout(() => {
+            modalContentInput.focus();
+        }, 50)
+    }
+
+// 2. Функция закрытия модального окна (ОТКАТ)
+    function closeNoteModal() {
+        // При закрытии (без сохранения) возвращаем исходные данные, чтобы они не "запомнились"
+        if (modalOriginalNote) {
+            modalTitleInput.value = modalOriginalNote.title || 'Без названия';
+            modalContentInput.value = modalOriginalNote.content;
+            modalTtlInput.value = modalOriginalNote.ttlMinutes || '0';
+        }
+
+        modalOverlay.classList.remove('active');
+        modalOriginalNote = null; // Убираем снапшот
+
+        modalContentInput.blur();
+        modalTitleInput.blur();
+    }
+
+    modalCloseBtn.addEventListener('click', closeNoteModal);
+
+// Клик по затемнению (если кликнули вне окна)
+    modalOverlay.addEventListener('mousedown', (e) => {
+        if (e.target === modalOverlay) {
+            closeNoteModal();
+        }
+    });
+
+    function updateCardInGrid(note) {
+        // При закрытии (без сохранения) возвращаем исходные данные, чтобы они не "запомнились"
+        const newCard = createNoteCard(note);
+        const oldCard = document.querySelector(`.note-card[data-id="${note.id}"]`);
+
+        // Вставить новая карточка vor старую
+        if (oldCard) {
+            oldCard.replaceWith(newCard);
+        }
+    }
+
+// 4. Кнопка "Сохранить" (обработчик на бэкенд)
+    modalSaveBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+
+        const title = modalTitleInput.value.trim();
+        const content = modalContentInput.value.trim();
+        const ttlValues = document.getElementById('modalTtlInput').value;
+        const noteId = modalOriginalNote.id;
+
+        if (!content) {
+            alert('Нельзя сохранить пустую заметку!');
+            return;
+        }
+
+        if (content.length > 1000) {
+            alert('Размер заметки может быть не более чем 1000');
+            return;
+        }
+
+        let ttlMinutes = parseInt(ttlValues, 10);
+        if (!ttlMinutes || ttlMinutes < 1) {
+            alert('Число минут должно быть положительным!');
+            return;
+        }
+
+        if (ttlMinutes > 1440) {
+            alert(`Максимальное время жизни заметки — 1440 минут`);
+            ttlMinutes = 1440; // Обрезаем до безопасного значения
+        }
+
+
+        try {
+            const response = await fetch(`/api/pastes/${noteId}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title, content, ttlMinutes })
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при редактировании');
+            }
+
+            const updatedNote = await response.json();
+            updateCardInGrid(updatedNote);
+
+
+            modalOriginalNote = { ...updatedNote };
+
+            closeNoteModal();
+
+        } catch (error) {
+            console.error('Ошибка при редактировании:', error);
+            alert('Не удалось редактировать заметку: ' + error.message);
+        }
+    });
+
+    modalTtlInput.addEventListener('focus', function() {
+        this.select();
+    });
+
+    const modalTtlWrapper = document.querySelector('.modal-ttl');
+
+    modalTtlWrapper.addEventListener('focus', function() {
+        modalTtlInput.select();
+    });
+
+
+
+
+
+
+
 });
