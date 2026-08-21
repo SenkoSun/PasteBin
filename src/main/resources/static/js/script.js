@@ -572,6 +572,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const link = `${window.location.origin}/search/${modalSlug.textContent}`;
 
+
         try {
             const clipboard = window.navigator.clipboard;
             if (!clipboard) {
@@ -579,7 +580,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             await clipboard.writeText(link);
-            alert('Копировано! Ссылка: ' + link);
+            modalShareBtn.textContent = 'Скопировано!';
+            setTimeout(() => {
+                modalShareBtn.textContent = 'Поделиться';
+            }, 1000);
+            // alert('Копировано! Ссылка: ' + link);
         } catch (error) {
             console.error('Ошибка при копировании:', error);
             alert('Не удалось копировать: ' + error.message);
