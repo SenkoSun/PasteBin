@@ -2,7 +2,7 @@
 // КОНФИГУРАЦИЯ
 // ============================================
 
-const API_BASE = '/api';
+// const API_BASE = '/api';
 
 
 // ============================================
@@ -322,11 +322,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const content = contentInput.value.trim();
         const ttlValue = ttlInput.value.trim();
 
-        let ttlMinutes;
+        let ttlMinutes = parseInt(ttlValue, 10);
 
         if (!ttlValue) {
             ttlMinutes = 60;
+        } else {
+            if (!isNaN(parseFloat(ttlValue)) && !Number.isInteger(parseFloat(ttlValue))) {
+                alert('Время должно быть натуральным числом минут');
+                return;
+            }
         }
+
+        if (isNaN(ttlMinutes)) {
+            alert('Время должно быть натуральным числом минут');
+            return;
+        }
+
 
         if (!content) {
             alert('Нельзя сохранить пустую заметку!');
@@ -382,7 +393,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
             collapseAndClear();
-        } catch (error) {
+         } catch (error) {
             console.error('Ошибка при отправке заметки:', error);
             alert('Не удалось сохранить заметку: ' + error.message);
         } finally {
@@ -406,6 +417,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalCloseBtn = document.getElementById('modalCloseBtn');
     const modalSaveBtn = document.getElementById('modalSaveBtn');
     const modalShareBtn = document.getElementById('modalShareBtn');
+    const modalSlug = document.getElementById('modalSlug');
+
 
     let modalOriginalNote = null;
 
@@ -417,6 +430,8 @@ document.addEventListener('DOMContentLoaded', function() {
         modalTitleInput.value = note.title || 'Без названия';
         modalContentInput.value = note.content;
         modalTtlInput.value = note.ttlMinutes || '0'; // Заполняем время жизни
+
+        modalSlug.textContent  = note.slug || 'Неизвестный slug';
 
         // Открываем окно
         modalOverlay.classList.add('active');
@@ -462,7 +477,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-// 4. Кнопка "Сохранить" (обработчик на бэкенд)
+// 4. Кнопка "Сохранить"
     modalSaveBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
 
@@ -482,7 +497,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         let ttlMinutes = parseInt(ttlValues, 10);
-        if (!ttlMinutes || ttlMinutes < 1) {
+
+        if (!isNaN(parseFloat(ttlValues)) && !Number.isInteger(parseFloat(ttlValues))) {
+            alert('Время должно быть натуральным числом минут');
+            return;
+        }
+
+        if (isNaN(ttlMinutes)) {
+            alert('Время должно быть натуральным числом минут');
+            return;
+        }
+
+        if (!ttlMinutes) {
+            ttlMinutes = 1;
+        }
+
+        if (ttlMinutes < 0) {
             alert('Число минут должно быть положительным!');
             return;
         }
@@ -491,7 +521,6 @@ document.addEventListener('DOMContentLoaded', function() {
             alert(`Максимальное время жизни заметки — 1440 минут`);
             ttlMinutes = 1440; // Обрезаем до безопасного значения
         }
-
 
         try {
             const response = await fetch(`/api/pastes/${noteId}`, {
@@ -504,7 +533,9 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (!response.ok) {
-                throw new Error('Ошибка при редактировании');
+                alert('Ошибка при редактировании');
+                return;
+                // throw new Error('Ошибка при редактировании');
             }
 
             const updatedNote = await response.json();
@@ -529,6 +560,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
     modalTtlWrapper.addEventListener('focus', function() {
         modalTtlInput.select();
+    });
+
+    modalShareBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+
+        if (!modalSlug.textContent) {
+            alert('Заметка без уникального slug. Не можем поделиться!');
+            return;
+        }
+
+        const link = `${window.location.origin}/search/${modalSlug.textContent}`;
+
+        try {
+            const clipboard = window.navigator.clipboard;
+            if (!clipboard) {
+                alert('Копирование не поддерживается вашим браузером.');
+                return;
+            }
+            await clipboard.writeText(link);
+            alert('Копировано! Ссылка: ' + link);
+        } catch (error) {
+            console.error('Ошибка при копировании:', error);
+            alert('Не удалось копировать: ' + error.message);
+        }
     });
 
 

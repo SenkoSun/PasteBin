@@ -934,3 +934,24 @@ body {
     color: #5f6368;
 }
 .modal-share-btn:hover { background: #d2e3fc; }
+
+.modal-slug {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #5f6368;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+.modal-slug:hover {
+    background: #f1f3f4;
+}
+
+.modal-slug.text {
+    content: attr(data-slug);
+}

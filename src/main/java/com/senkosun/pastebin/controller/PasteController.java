@@ -31,6 +31,7 @@ public class PasteController {
 
     @PostMapping
     public ResponseEntity<PasteResponse> createPaste(Authentication authentication, @Valid @RequestBody CreatePasteRequest request) {
+        System.out.println(request.getTtlMinutes());
         PasteResponse pasteResponse = pasteService.createPaste(
                 request.getTitle(),
                 request.getContent(),
@@ -60,6 +61,7 @@ public class PasteController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PasteResponse> updatePaste(@PathVariable Long id, Authentication authentication,  @Valid @RequestBody UpdatePasteRequest request) {
+        System.out.println(request.getTtlMinutes());
         PasteResponse response = pasteService.updatePaste(
                 id,
                 request.getTitle(),
