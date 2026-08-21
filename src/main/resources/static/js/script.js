@@ -217,6 +217,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             await clipboard.writeText(link);
+
+            const shareBtn = document.querySelector(`.share-btn[data-id="${note.id}"]`);
+            shareBtn.innerHTML = '<span class="material-symbols-outlined">check</span>';
+
+            setTimeout(() => {
+                shareBtn.innerHTML = '<span class="material-symbols-outlined">share</span>';
+            }, 700);
+
         } catch (error) {
             console.error('Ошибка при копировании:', error);
             alert('Не удалось копировать: ' + error.message);
