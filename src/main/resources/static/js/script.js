@@ -160,7 +160,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const token = localStorage.getItem('accessToken');
 
         if (token) {
-            userEmptyState.style.display = 'block';
             guestEmptyState.style.display = 'none';
         } else {
             return;
@@ -180,11 +179,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             const data = await response.json();
-
+            const grid = document.getElementById('notesGrid');
+            grid.innerHTML = '';
             if (data && data.length > 0) {
-                const grid = document.getElementById('notesGrid');
-                grid.innerHTML = '';
-
                 data.forEach(note => {
                     const card = createNoteCard(note);
                     grid.appendChild(card);
@@ -192,6 +189,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 userEmptyState.style.display = 'none';
 
+            } else {
+                userEmptyState.style.display = 'block';
             }
 
         } catch (error) {
@@ -651,7 +650,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
+    const refreshBtn = document.getElementById('refreshBtn');
+    refreshBtn.addEventListener('click', () => {
+        showPastes();
+    });
 
 
 
