@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
     profileBtn.addEventListener('click', function(e) {
         e.stopPropagation();  // Чтобы не закрылось сразу
         dropdown.classList.toggle('open');
-        console.log("Открытие/закрытие меню ");
     });
 
     // 4. Закрытие меню при клике вне его
@@ -215,7 +214,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Через 300 мс удаляем из DOM
                 setTimeout(() => {
                     card.remove();
+                    const grid = document.getElementById('notesGrid');
+                    const userEmptyState = document.getElementById('emptyStateUser');
+                    const noteCards = grid.querySelectorAll('.note-card');
+
+                    if (noteCards.length === 0) {
+                        userEmptyState.style.display = 'block';
+                    } else {
+                        userEmptyState.style.display = 'none';
+                    }
                 }, 300);
+
             }
 
         } catch (error) {
@@ -299,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!token) {
             collapseAndClear();
             alert('Чтобы создать заметку, пожалуйста, войдите в аккаунт.');
-            return; // Выходим, не раскрывая форму
+            return;
         }
 
         const title = titleInput.value.trim();
@@ -340,6 +349,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const grid = document.getElementById('notesGrid');
             const noteCard = createNoteCard(newNote);
             grid.prepend(noteCard);
+
+            const userEmptyState = document.getElementById('emptyStateUser');
+            const noteCards = grid.querySelectorAll('.note-card');
+
+            if (noteCards.length === 0) {
+                userEmptyState.style.display = 'block';
+            } else {
+                userEmptyState.style.display = 'none';
+            }
 
 
             collapseAndClear();
