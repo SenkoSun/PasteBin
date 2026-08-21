@@ -106,6 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const card = document.createElement('div');
         card.className = 'note-card';
         card.dataset.id = note.id;
+        card.dataset.slug = note.slug;
 
         let displayContent = note.content || 'Пустая заметка';
         if (displayContent.length > 385) {
@@ -118,6 +119,10 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="note-content">${escapeHtml(displayContent)}</div>
         
         <div class="note-actions">
+            <button class="action-btn share-btn" data-id="${note.id}" title="Поделиться">
+                <span class="material-symbols-outlined">share</span>
+            </button>
+        
             <button class="action-btn edit-btn" data-id="${note.id}" title="Редактировать">
                 <span class="material-symbols-outlined">edit</span>
             </button>
@@ -128,7 +133,10 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     `;
 
-        // Добавляем обработчик удаления
+
+        const shareBtn = card.querySelector('.share-btn');
+        shareBtn.addEventListener('click', () => shareNote(note));
+
         const deleteBtn = card.querySelector('.delete-btn');
         deleteBtn.addEventListener('click', () => deleteNote(note.id));
 
@@ -191,6 +199,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     showPastes();
+
+    async function shareNote(note) {
+        const slug = note.slug;
+
+        if (!slug) {
+            alert('Заметка без уникального slug. Не можем поделиться!');
+            return;
+        }
+
+        const link = `${window.location.origin}/search/${slug}`;
+
+        try {
+            const clipboard = window.navigator.clipboard;
+            if (!clipboard) {
+                alert('Копирование не поддерживается вашим браузером.');
+                return;
+            }
+            await clipboard.writeText(link);
+        } catch (error) {
+            console.error('Ошибка при копировании:', error);
+            alert('Не удалось копировать: ' + error.message);
+        }
+    }
 
     async function deleteNote(noteId) {
         if (!confirm('Вы уверены, что хотите удалить эту заметку?')) {
