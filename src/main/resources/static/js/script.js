@@ -591,6 +591,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    modalSlug.addEventListener('click', async (e) => {
+        e.stopPropagation();
+
+        const clipboard = window.navigator.clipboard;
+        const link = modalSlug.textContent;
+
+        try {
+            await clipboard.writeText(link);
+            modalSlug.textContent = 'Скопировано!';
+
+            setTimeout(() => {
+                modalSlug.textContent = link || 'Неизвестный slug';
+            }, 1000);
+        } catch (error) {
+            console.error('Ошибка при копировании:', error);
+            alert('Не удалось копировать: ' + error.message);
+        }
+    });
+
 
 
 
