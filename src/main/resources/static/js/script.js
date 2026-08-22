@@ -65,15 +65,15 @@ document.addEventListener('DOMContentLoaded', function() {
     logoutItem.addEventListener('click', async function(e) {
         e.preventDefault();
 
-        const accessToken = localStorage.getItem('accessToken');
+        const refreshToken = localStorage.getItem('refreshToken');
 
         // 1. Отправляем запрос на сервер (если есть токен)
-        if (accessToken) {
+        if (refreshToken) {
             try {
                 const response = await fetch('/api/auth/logout', {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${accessToken}`
+                        'Authorization': `Bearer ${refreshToken}`
                     }
                 });
 
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {
-            const response = await fetch('/api/pastes', {
+            const response = await apiFetch('/api/pastes', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             // 2. Отправляем DELETE запрос на сервер
-            const response = await fetch(`/api/pastes/${noteId}`, {
+            const response = await apiFetch(`/api/pastes/${noteId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -401,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function() {
         saveBtn.textContent = 'Сохранение...';
 
         try {
-            const response = await fetch('/api/pastes', {
+            const response = await apiFetch('/api/pastes', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -561,7 +561,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {
-            const response = await fetch(`/api/pastes/${noteId}`, {
+            const response = await apiFetch(`/api/pastes/${noteId}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -668,6 +668,77 @@ document.addEventListener('DOMContentLoaded', function() {
 
         }, 600);
     });
+
+    async function refreshAccessToken() {
+        const refreshToken = localStorage.getItem('refreshToken');
+        const response = await fetch('/api/auth/refresh', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${refreshToken}`,
+                'Content-Type': 'application/json' },
+            body: JSON.stringify({ refreshToken })
+        });
+
+        if (!response.ok) {
+            localStorage.clear();
+            window.location.href = '/login';
+        }
+
+        const data = await response.json();
+        localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('refreshToken', data.refreshToken);
+        return data.accessToken;
+    }
+
+    let isRefreshing = false;
+    let refreshPromise = null;
+
+    async function apiFetch(url, options = {}) {
+        // Читаем текущий Access Token
+        let accessToken = localStorage.getItem('accessToken');
+
+        // Создаем заголовки (Headers), добавляем токен
+        const headers = new Headers(options.headers || {});
+        if (accessToken) {
+            headers.set('Authorization', `Bearer ${accessToken}`);
+        }
+
+        // Отправляем запрос с токеном
+        let response = await fetch(url, { ...options, headers });
+
+        // Если Access Token истёк (сервер вернул 401)
+        if (response.status === 401) {
+
+            // Если ещё никто не начал обновлять токен, начинаем обновление
+            if (!isRefreshing) {
+                isRefreshing = true;
+                refreshPromise = refreshAccessToken();
+                try {
+                    await refreshPromise;
+                } catch (e) {
+                    isRefreshing = false;
+                    // Если Refresh Token тоже истёк -> выкидываем пользователя на логин
+                    localStorage.clear();
+                    window.location.href = '/login';
+                    throw e;
+                } finally {
+                    isRefreshing = false;
+                }
+            }
+
+            // Если кто-то другой уже обновляет токен, мы просто ждём его результата
+            if (refreshPromise) {
+                await refreshPromise;
+            }
+
+            // После обновления берём НОВЫЙ токен и повторяем исходный запрос
+            accessToken = localStorage.getItem('accessToken');
+            headers.set('Authorization', `Bearer ${accessToken}`);
+            response = await fetch(url, { ...options, headers });
+        }
+
+        return response;
+    }
+
 
 
 
