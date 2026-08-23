@@ -688,7 +688,6 @@ document.addEventListener('DOMContentLoaded', function() {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${refreshToken}`,
                 'Content-Type': 'application/json' },
-            body: JSON.stringify({ refreshToken })
         });
 
         if (!response.ok) {
@@ -698,7 +697,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const data = await response.json();
         localStorage.setItem('accessToken', data.accessToken);
-        localStorage.setItem('refreshToken', data.refreshToken);
         return data.accessToken;
     }
 
@@ -735,6 +733,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     throw e;
                 } finally {
                     isRefreshing = false;
+                    refreshPromise = null;
                 }
             }
 
