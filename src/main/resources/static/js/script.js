@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 2. Проверяем авторизацию и показываем нужные пункты
     function updateMenu() {
-        const token = localStorage.getItem('accessToken');
+        let token = localStorage.getItem('accessToken');
         if (token) {
             // Если авторизован - показываем "Выйти"
             loginItem.style.display = 'none';
@@ -109,8 +109,13 @@ document.addEventListener('DOMContentLoaded', function() {
         card.dataset.slug = note.slug;
 
         let displayContent = note.content || 'Пустая заметка';
-        if (displayContent.length > 385) {
-            displayContent = displayContent.substring(0, 385) + '...';
+
+        const notesGrid = document.getElementById('notesGrid');
+        const isListView = notesGrid.classList.contains('list-view');
+        const maxLength = isListView ? 900 : 385;
+
+        if (displayContent.length > maxLength) {
+            displayContent = displayContent.substring(0, maxLength) + '...';
         }
 
         // Заполняем HTML
@@ -157,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const userEmptyState  = document.getElementById('emptyStateUser');
         const guestEmptyState  = document.getElementById('emptyStateGuest');
 
-        const token = localStorage.getItem('accessToken');
+        let token = localStorage.getItem('accessToken');
 
         if (token) {
             guestEmptyState.style.display = 'none';
@@ -191,11 +196,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
             } else {
                 userEmptyState.style.display = 'block';
+
+            //
+            // const savedView = localStorage.getItem('notesViewMode') || 'grid';
+            // if (savedView === 'list') {
+            //     notesGrid.classList.add('list-view');
+            // } else {
+            //     notesGrid.classList.remove('list-view');
             }
 
         } catch (error) {
             console.error('Ошибка при загрузке заметок:', error);
         }
+
     }
     showPastes();
 
@@ -738,6 +751,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
         return response;
     }
+
+
+    const viewBtn = document.getElementById('viewBtn');
+    const notesGrid = document.getElementById('notesGrid');
+
+    const savedView = localStorage.getItem('notesViewMode') || 'grid';
+
+    function switchView(mode) {
+        if (mode === 'list') {
+            notesGrid.classList.add('list-view');
+            viewBtn.textContent = 'grid_view'; // Иконка меняется на "сетку"
+            localStorage.setItem('notesViewMode', 'list');
+        } else {
+            notesGrid.classList.remove('list-view');
+            viewBtn.textContent = 'view_agenda'; // Иконка меняется на "список"
+            localStorage.setItem('notesViewMode', 'grid');
+        }
+    }
+    switchView(savedView);
+
+    viewBtn.addEventListener('click', () => {
+        const currentMode = notesGrid.classList.contains('list-view') ? 'grid' : 'list';
+        switchView(currentMode);
+    });
 
 
 

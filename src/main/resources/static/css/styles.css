@@ -966,3 +966,33 @@ body {
 #refreshBtn.rotating {
     transform: rotate(360deg);
 }
+
+
+
+.notes-grid.list-view {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    /* Критично: ограничиваем ширину карточек */
+    max-width: 700px;
+    margin: 0 auto; /* Центрируем */
+}
+
+.notes-grid.list-view .note-card {
+    width: 100%; /* 100% от контейнера, который уже ограничен */
+    max-width: 600px; /* Ограничиваем вручную! */
+    margin: 0 auto;
+    height: auto;
+    padding: 20px 24px;
+    line-height: 1.6;
+    /* В режиме списка: карточки стали больше по высоте */
+    vertical-align: top;
+}
+
+
+.notes-grid.list-view .note-card {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: auto;
+
+}

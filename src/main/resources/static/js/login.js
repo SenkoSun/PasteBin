@@ -66,10 +66,10 @@ if (loginForm) {
 // 2. ПРОВЕРКА АВТОРИЗАЦИИ
 // ============================================
 
-const token = localStorage.getItem('accessToken');
-if (token && (window.location.pathname === '/login' || window.location.pathname === '/register')) {
-    window.location.href = '/';
-}
+// const token = localStorage.getItem('accessToken');
+// if (token && (window.location.pathname === '/login' || window.location.pathname === '/register')) {
+//     window.location.href = '/';
+// }
 
 // ============================================
 // ПРОФИЛЬ - ВЫПАДАЮЩЕЕ МЕНЮ
