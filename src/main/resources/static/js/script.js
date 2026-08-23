@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
         editBtn.addEventListener('click', () => openNoteModal(note));
 
         card.addEventListener('click', (e) => {
-            // Если кликнули не на кнопку (т.е. не на edit, delete и т.д.), то открываем
+            // Если кликнули не на кнопку то открываем
             if (!e.target.closest('button')) {
                 openNoteModal(note);
             }
@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-
+    // Создание заметки
     const wrapper = document.getElementById('noteCreatorWrapper');
     const titleInput = document.getElementById('noteTitleInput');
     const contentInput = document.getElementById('noteContentInput');
@@ -773,6 +773,19 @@ document.addEventListener('DOMContentLoaded', function() {
     viewBtn.addEventListener('click', () => {
         const currentMode = notesGrid.classList.contains('list-view') ? 'grid' : 'list';
         switchView(currentMode);
+    });
+
+    function searchPage(page) {
+        let slug = page.slice(-6);
+        window.location.href = `/search/${slug}`;
+    }
+
+    const searchInput = document.getElementById('search-input');
+
+    searchInput.addEventListener('keydown', (e) => {
+       if (e.key === 'Enter') {
+           searchPage(searchInput.value.trim())
+       }
     });
 
 
