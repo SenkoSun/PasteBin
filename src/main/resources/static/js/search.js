@@ -347,5 +347,44 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
+    function searchPage(page) {
+        let slug = page.slice(-6);
+        window.location.href = `/search/${slug}`;
+    }
+
+    const searchInput = document.getElementById('search-input');
+    const eraseBtn = document.getElementById('eraseBtn');
+    const searchBtn = document.getElementById('searchBtn');
+
+    if (searchInput && eraseBtn) {
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                searchPage(searchInput.value.trim());
+            }
+        });
+
+        searchInput.addEventListener('focus', () => {
+            eraseBtn.style.display = 'block';
+        });
+
+        searchInput.addEventListener('blur', () => {
+            if (searchInput.value.trim() === '') {
+                eraseBtn.style.display = 'none';
+            }
+        });
+
+        eraseBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            searchInput.value = '';
+            searchInput.focus();
+        });
+    }
+
+    if (searchBtn && searchInput) {
+        searchBtn.addEventListener('click', () => {
+            searchPage(searchInput.value.trim());
+        });
+    }
+
 
 });

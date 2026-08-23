@@ -20,8 +20,9 @@
         </a>
 
         <div class="search-container">
-            <span class="material-symbols-outlined search-icon">search</span>
-            <input class="search-input" type="text" placeholder="Поиск..."/>
+            <span class="material-symbols-outlined" id="searchBtn">search</span>
+            <input class="search-input" type="text" id="search-input" placeholder="Поиск..."/>
+            <span class="material-symbols-outlined" id="eraseBtn" style="display:none;">close </span>
         </div>
 
         <div class="header-actions">
@@ -58,12 +59,12 @@
     <div class="modal-overlay" id="noteModalOverlay">
         <div class="modal-window" id="noteModalWindow">
             <div class="modal-header">
-                <input type="text" id="modalTitleInput" class="modal-title-input" maxlength="50" placeholder="Название...">
+                <input type="text" id="modalTitleInput" class="modal-title-input" maxlength="50" placeholder="Название..." disabled>
                 <div class="modal-slug" id="modalSlug" ></div>
             </div>
 
             <div class="modal-body">
-                <textarea id="modalContentInput" class="modal-content-textarea" placeholder="Текст заметки..." maxlength="1000"></textarea>
+                <textarea id="modalContentInput" class="modal-content-textarea" placeholder="Текст заметки..." maxlength="1000" disabled></textarea>
             </div>
 
             <div class="modal-footer">

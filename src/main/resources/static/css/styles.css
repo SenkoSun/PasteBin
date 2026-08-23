@@ -64,7 +64,7 @@ body {
     align-items: center;
     background: #f1f3f4;
     border-radius: 8px;
-    padding: 0 16px;
+    padding: 0 4px;
     border: 1px solid transparent;
     transition: 0.15s;
     max-width: 720px;
@@ -122,6 +122,21 @@ body {
 .header-actions .material-symbols-outlined:hover {
     background: rgba(60, 64, 67, 0.08);
 }
+
+.search-container .material-symbols-outlined {
+    font-size: 24px;
+    color: #5f6368;
+    padding: 6px;
+    border-radius: 50%;
+    cursor: default;
+    transition: background 0.15s;
+}
+
+.search-container .material-symbols-outlined:hover {
+    background: rgba(60, 64, 67, 0.08);
+}
+
+
 
 .profile-wrapper {
     position: relative;  /* Для позиционирования меню */
