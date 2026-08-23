@@ -101,17 +101,22 @@ public class PasteService {
     }
 
     @Transactional
-    public PasteResponse getPasteBySlug(String slug) {
+    public List<PasteResponse> getPasteBySlug(String slug) {
 
-        Paste paste = pasteRepository.findBySlug(slug)
-                .orElseThrow(() -> new RuntimeException("Paste not found"));
+        List<Paste> pastes = pasteRepository.findBySlugOrderByCreatedAtDesc(slug);
 
-        if (paste.getExpiresAt().isBefore(LocalDateTime.now())) {
-            pasteRepository.delete(paste);
-            throw new RuntimeException("Paste has expired and has been deleted");
+        List<Paste> activePastes = new ArrayList<>();
+        for (Paste paste : pastes) {
+            if (paste.getExpiresAt().isBefore(LocalDateTime.now())) {
+                pasteRepository.delete(paste);
+            } else {
+                activePastes.add(paste);
+            }
         }
 
-        return toResponse(paste);
+        return activePastes.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
 
     }
 

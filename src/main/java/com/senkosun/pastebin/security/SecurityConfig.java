@@ -42,6 +42,8 @@ public class SecurityConfig {
                                 "/",
                                 "/login",
                                 "/registration",
+                                "/search",
+                                "/search/**",
                                 "/html/**",
                                 "/css/**",
                                 "/js/**",
@@ -51,6 +53,7 @@ public class SecurityConfig {
                         ).permitAll()
                         // Открытые эндпоинты (без токена)
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/pastes/slug/**").permitAll()
                         // Защищенные эндпоинты (требуют токен)
                         .requestMatchers("/api/pastes/**").authenticated()
                         .requestMatchers("/api/users/**").authenticated()

@@ -87,9 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        localStorage.removeItem('user');
+        localStorage.clear();
         updateMenu();  // Обновляем меню
         dropdown.classList.remove('open');  // Закрываем меню
         window.location.reload();  // Перезагружаем страницу
@@ -760,11 +758,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function switchView(mode) {
         if (mode === 'list') {
             notesGrid.classList.add('list-view');
-            viewBtn.textContent = 'grid_view'; // Иконка меняется на "сетку"
+            viewBtn.textContent = 'view_agenda'; // Иконка меняется на "сетку"
             localStorage.setItem('notesViewMode', 'list');
         } else {
             notesGrid.classList.remove('list-view');
-            viewBtn.textContent = 'view_agenda'; // Иконка меняется на "список"
+            viewBtn.textContent = 'grid_view'; // Иконка меняется на "список"
             localStorage.setItem('notesViewMode', 'grid');
         }
     }

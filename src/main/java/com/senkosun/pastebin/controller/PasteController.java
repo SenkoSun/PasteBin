@@ -54,8 +54,8 @@ public class PasteController {
     }
 
     @GetMapping("/slug/{slug}")
-    public ResponseEntity<PasteResponse> getPasteBySlug(@PathVariable String slug) {
-        PasteResponse response = pasteService.getPasteBySlug(slug);
+    public ResponseEntity<List<PasteResponse>> getPasteBySlug(@PathVariable String slug) {
+        List<PasteResponse> response = pasteService.getPasteBySlug(slug);
         return ResponseEntity.ok(response);
     }
 

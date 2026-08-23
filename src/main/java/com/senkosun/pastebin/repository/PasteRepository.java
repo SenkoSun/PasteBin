@@ -11,6 +11,7 @@ import java.util.Optional;
 @Repository
 public interface PasteRepository extends JpaRepository<Paste, Long>  {
     List<Paste> findByUserOrderByCreatedAtDesc(User user);
+    List<Paste> findBySlugOrderByCreatedAtDesc(String slug);
     Optional<Paste> findBySlug(String slug);
     boolean existsBySlug(String slug);
 //    void deleteByUserAndExpiredTrue(User user);
