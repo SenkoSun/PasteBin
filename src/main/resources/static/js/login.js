@@ -44,7 +44,6 @@ if (loginForm) {
             // Сохраняем токены
             localStorage.setItem('accessToken', data.accessToken);
             localStorage.setItem('refreshToken', data.refreshToken);
-            localStorage.setItem('user', JSON.stringify(data.user));
 
             message.textContent = 'Вход выполнен!';
             message.className = 'auth-message success';
