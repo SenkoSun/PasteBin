@@ -6,10 +6,12 @@ import com.senkosun.pastebin.dto.response.RefreshResponse;
 import com.senkosun.pastebin.entity.Paste;
 import com.senkosun.pastebin.entity.User;
 import com.senkosun.pastebin.entity.RefreshToken;
+import com.senkosun.pastebin.repository.CacheRepository;
 import com.senkosun.pastebin.repository.PasteRepository;
 import com.senkosun.pastebin.repository.UserRepository;
 import com.senkosun.pastebin.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,8 @@ import java.util.stream.Collectors;
 public class PasteService {
     private final UserRepository userRepository;
     private final PasteRepository pasteRepository;
+
+    private final CacheRepository cacheRepository;
 
     @Transactional
     public PasteResponse createPaste(String title, String content, String username, Long ttlMinutes) {
@@ -103,7 +107,7 @@ public class PasteService {
     @Transactional
     public List<PasteResponse> getPasteBySlug(String slug) {
 
-        List<Paste> pastes = pasteRepository.findBySlugOrderByCreatedAtDesc(slug);
+        List<Paste> pastes = cacheRepository.getRawPastesFromDb(slug);
 
         List<Paste> activePastes = new ArrayList<>();
         for (Paste paste : pastes) {
