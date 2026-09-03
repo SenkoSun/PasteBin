@@ -74,7 +74,7 @@ Spring Boot автоматически управляет жизненным ц�
 
 ### Главная страница (авторизован)
 
-<img width="1892" height="881" alt="image" src="https://github.com/user-attachments/assets/d2b99b27-952e-485e-a6ce-e2cfee325cdd" />
+<img width="1893" height="920" alt="image" src="https://github.com/user-attachments/assets/dfd77ec8-4b50-46e0-a003-89128c212773" />
 
 ### Создание заметки
 
