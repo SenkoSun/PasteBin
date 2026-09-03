@@ -74,19 +74,20 @@ Spring Boot автоматически управляет жизненным ц�
 
 ### Главная страница (авторизован)
 
-<img width="2558" height="921" alt="image" src="https://github.com/user-attachments/assets/b6e2507c-4d2d-40c1-a2b8-5a33cde864cc" />
+<img width="1892" height="881" alt="image" src="https://github.com/user-attachments/assets/d2b99b27-952e-485e-a6ce-e2cfee325cdd" />
 
 ### Создание заметки
 
-<img width="2554" height="921" alt="image" src="https://github.com/user-attachments/assets/03d422f2-6439-49af-918e-00ce01645370" />
+<img width="1892" height="882" alt="image" src="https://github.com/user-attachments/assets/cddcfaaf-257c-410c-a713-ef074854e89f" />
 
 ### Просмотр/редактирование заметки
 
-<img width="2558" height="920" alt="image" src="https://github.com/user-attachments/assets/64b576b0-c930-4440-a6a9-739c8acde38a" />
+<img width="1896" height="882" alt="image" src="https://github.com/user-attachments/assets/3b5e117b-f683-4811-8df7-821ed13cddb5" />
 
 ### Страница регистрации
 
-<img width="2559" height="921" alt="image" src="https://github.com/user-attachments/assets/5593e6f6-8853-442d-b00e-302d8b42785c" />
+<img width="1895" height="918" alt="image" src="https://github.com/user-attachments/assets/0eda8b1b-c5e1-46d2-9906-e9286bbab2c2" />
+
 
 
 
