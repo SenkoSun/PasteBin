@@ -6,8 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
 
@@ -31,4 +33,23 @@ public class RedisConfig {
                 .cacheDefaults(config)
                 .build();
     }
+
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(connectionFactory);
+
+        // Ключи всегда пишем как чистые строки
+        template.setKeySerializer(RedisSerializer.string());
+        template.setHashKeySerializer(RedisSerializer.string());
+
+        // Значения пишем в JSON через современный сериализатор (совпадает с cacheManager)
+        template.setValueSerializer(RedisSerializer.json()); // ← Исправлено здесь без "2"
+        template.setHashValueSerializer(RedisSerializer.json());
+
+        template.afterPropertiesSet();
+        return template;
+    }
+
+
 }

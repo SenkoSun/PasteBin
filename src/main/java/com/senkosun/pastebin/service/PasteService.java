@@ -11,7 +11,11 @@ import com.senkosun.pastebin.repository.PasteRepository;
 import com.senkosun.pastebin.repository.UserRepository;
 import com.senkosun.pastebin.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +31,10 @@ import java.util.stream.Collectors;
 public class PasteService {
     private final UserRepository userRepository;
     private final PasteRepository pasteRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     private final CacheRepository cacheRepository;
+    private final CacheManager cacheManager;
 
     @Transactional
     public PasteResponse createPaste(String title, String content, String username, Long ttlMinutes) {
@@ -126,13 +132,16 @@ public class PasteService {
 
     @Transactional
     public PasteResponse updatePaste(Long id, String title, String content, String username, Long ttlMinutes) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found" + username));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found: " + username));
 
         Paste paste = pasteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Paste not found"));
 
         if (paste.getExpiresAt().isBefore(LocalDateTime.now())) {
+            String expiredSlug = paste.getSlug();
             pasteRepository.delete(paste);
+            deleteFromRedis(expiredSlug);
             throw new RuntimeException("Paste has expired and has been deleted");
         }
 
@@ -149,16 +158,18 @@ public class PasteService {
             paste.setExpiresAt(paste.getExpiresAt().plusMinutes(ttlMinutes));
         }
 
+        String expiredSlug = paste.getSlug();
+        deleteFromRedis(expiredSlug);
 
         Paste updatedPaste = pasteRepository.save(paste);
         return toResponse(updatedPaste);
-
     }
 
 
     @Transactional
     public void deletePaste(Long id, String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         Paste paste = pasteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Paste not found"));
@@ -167,8 +178,26 @@ public class PasteService {
             throw new RuntimeException("You can only delete your own pastes");
         }
 
+        String slug = paste.getSlug();
         pasteRepository.delete(paste);
 
+        // ✅ Удаляем через RedisTemplate
+        deleteFromRedis(slug);
+    }
+
+    private void deleteFromRedis(String slug) {
+        System.out.println(slug);
+        String key = "pastes::" + slug;
+        Boolean deleted = redisTemplate.delete(key);
+    }
+
+    private void evictCacheExplicitly(String slug) {
+        Cache cache = cacheManager.getCache("pastes");
+        if (cache != null) {
+            cache.evict(slug);
+        } else {
+            System.out.println("❌Cache not found");
+        }
     }
 
     private PasteResponse toResponse(Paste paste) {
