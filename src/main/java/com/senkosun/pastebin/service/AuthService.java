@@ -61,7 +61,7 @@ public class AuthService {
         String accessToken = jwtService.generateAccessToken(
                 user.getUsername(),
                 user.getId(),
-                user.isAdmin()
+                user.getIsAdmin()
         );
 
         String refreshTokenString = jwtService.generateRefreshToken(
@@ -103,7 +103,7 @@ public class AuthService {
         String newAccessToken = jwtService.generateAccessToken(
                 user.getUsername(),
                 user.getId(),
-                user.isAdmin()
+                user.getIsAdmin()
         );
         return new RefreshResponse(newAccessToken);
     }

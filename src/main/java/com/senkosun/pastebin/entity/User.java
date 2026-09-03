@@ -30,7 +30,7 @@ public class User {
     private String passwordHash;
 
     @Column(name = "is_admin", nullable = false)
-    private boolean isAdmin;
+    private Boolean isAdmin;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
